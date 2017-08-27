@@ -4,20 +4,26 @@ import 'hammerjs';
 
 import { AppComponent } from './app.component';
 import {CodekampComponent} from './codekamp';
-import {MdButtonModule, MdCardModule, MdSliderModule} from '@angular/material';
+import {MdButtonModule, MdCardModule, MdIconModule, MdInputModule, MdSliderModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LoginComponent} from './login';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CodekampComponent
+    CodekampComponent,
+    LoginComponent
   ],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
+    FlexLayoutModule,
     MdButtonModule,
     MdCardModule,
-    MdSliderModule
+    MdSliderModule,
+    MdInputModule,
+    MdIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
