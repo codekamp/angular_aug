@@ -1,12 +1,16 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import 'rxjs/add/operator/debounce';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/map';
-import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/timer';
+import {switchMap} from '@angular/cdk';
+import 'rxjs/add/operator/switchMap';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/from';
 
 @Component({
   selector: 'app-login',
@@ -14,11 +18,11 @@ import 'rxjs/add/observable/timer';
     <md-card fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="30px">
       <h2>Login</h2>
       <md-input-container class="username" [formGroup]="xyz">
-        <input [formControlName]="'hello'" mdInput placeholder="Enter username"/>
+        <input [formControlName]="'username'" mdInput placeholder="Enter username"/>
         <md-error>Username is required and should be a valid email</md-error>
       </md-input-container>
       <md-input-container class="password" [formGroup]="xyz">
-        <input [formControlName]="'world'" mdInput placeholder="Enter password"/>
+        <input [formControlName]="'password'" mdInput placeholder="Enter password"/>
         <md-error>Password is required</md-error>
       </md-input-container>
       <button [color]="'primary'" (click)="myLogin()"
@@ -37,22 +41,50 @@ import 'rxjs/add/observable/timer';
 })
 export class LoginComponent {
 
-  xyz = new FormGroup({
-    hello: new FormControl(null, [Validators.required, Validators.email]),
-    world: new FormControl()
-  });
+  xyz: FormGroup;
+  passwordControl: FormControl;
 
   constructor() {
-    this.xyz.valueChanges.map((value) => value.hello).debounceTime(2000).distinctUntilChanged()
-      .subscribe(this.doSomething, (error) => console.log(error));
+    const usernameControl = new FormControl(null, [Validators.required, Validators.email]);
+    this.passwordControl = new FormControl();
+
+    this.xyz = new FormGroup({
+      username: usernameControl,
+      password: this.passwordControl
+    });
+
+    const a = usernameControl.valueChanges.combineLatest(this.passwordControl.valueChanges, (un, pw) => {
+      console.log('un is ' + un + ' and pw is ' + pw);
+      return {un, pw};
+    });
+
+    a.subscribe((value) => {
+      console.log('value fired on a is: ')
+      console.log(value);
+    });
+
+    const b = usernameControl.valueChanges.switchMap((value) => {
+      return 1000;
+    });
+
+    b.subscribe((value) => {
+      console.log(value);
+    });
   }
 
   myLogin() {
-    console.log(this.xyz.value);
-    console.log(this.xyz.value.hello);
   }
 
   doSomething(data: any) {
     console.log(data);
+  }
+
+  //
+  // onInput(value) {
+  //   console.log(value.srcElement.value);
+  // }
+
+  onValueChange(a: string) {
+    console.log(a);
   }
 }
