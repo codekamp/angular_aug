@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import 'rxjs/add/operator/debounce';
 import 'rxjs/add/operator/debounceTime';
@@ -8,10 +8,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/switchMap';
-import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
-import {VideoService} from './services/video';
-import {NotifyService} from './services/notify';
+import {InvidzService} from './services/invidz';
 
 @Component({
   selector: 'app-login',
@@ -42,55 +40,22 @@ import {NotifyService} from './services/notify';
 export class LoginComponent {
 
   xyz: FormGroup;
-  passwordControl: FormControl;
-  private notifyService: NotifyService;
-  private videoService: VideoService;
 
-  constructor(@Inject('xyz') ser: NotifyService, videoService: VideoService, @Inject('API_KEY') myKey: string) {
-    this.notifyService = ser;
-    this.videoService = videoService;
-    const usernameControl = new FormControl(null, [Validators.required, Validators.email]);
-    this.passwordControl = new FormControl();
+  constructor(private service: InvidzService) {
 
     this.xyz = new FormGroup({
-      username: usernameControl,
-      password: this.passwordControl
+      username: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl()
     });
-
-    const a = usernameControl.valueChanges.combineLatest(this.passwordControl.valueChanges, (un, pw) => {
-      console.log('un is ' + un + ' and pw is ' + pw);
-      return {un, pw};
-    });
-
-    a.subscribe((value) => {
-      console.log('value fired on a is: ')
-      console.log(value);
-    });
-
-    const b = usernameControl.valueChanges.switchMap((value) => {
-      return Observable.interval(1000);
-    });
-
-    // b.subscribe((value) => {
-    //   console.log(value);
-    // });
   }
 
   myLogin() {
-    this.notifyService.notify('Suspicious login detected. please ....');
-    const videos = this.videoService.getVideoList();
-  }
+    const output = this.service.login(this.xyz.get('username').value, this.xyz.get('password').value);
 
-  doSomething(data: any) {
-    console.log(data);
-  }
-
-  //
-  // onInput(value) {
-  //   console.log(value.srcElement.value);
-  // }
-
-  onValueChange(a: string) {
-    console.log(a);
+    output.subscribe(
+      (value) => console.log(value.json()),
+      (error) => console.log(error.json())
+    );
+    console.log('hello world!')
   }
 }

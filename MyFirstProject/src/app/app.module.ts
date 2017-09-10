@@ -9,8 +9,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginComponent} from './login';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {SmsService} from './services/sms';
-import {VideoService} from './services/video';
+import {InvidzService} from './services/invidz';
+import {HttpModule} from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -22,6 +22,7 @@ import {VideoService} from './services/video';
     BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
+    HttpModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     MdButtonModule,
@@ -30,12 +31,11 @@ import {VideoService} from './services/video';
     MdInputModule,
     MdIconModule
   ],
-  providers: [{provide: 'xyz', useClass: SmsService},
-    {provide: 'API_KEY', useValue: 'qwerty'}, {provide: VideoService, useFactory: () => {
-      return new VideoService(new SmsService());
-    }}
-  ],
+  providers: [InvidzService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
 }
+
+
+// https://api.invidz.com/api
