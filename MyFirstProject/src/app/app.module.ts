@@ -9,6 +9,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginComponent} from './login';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {SmsService} from './services/sms';
+import {VideoService} from './services/video';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MdInputModule,
     MdIconModule
   ],
-  providers: [],
+  providers: [{provide: 'xyz', useClass: SmsService},
+    {provide: 'API_KEY', useValue: 'qwerty'}, {provide: VideoService, useFactory: () => {
+      return new VideoService(new SmsService());
+    }}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

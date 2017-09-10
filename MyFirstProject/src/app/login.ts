@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import 'rxjs/add/operator/debounce';
 import 'rxjs/add/operator/debounceTime';
@@ -7,10 +7,11 @@ import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/timer';
-import {switchMap} from '@angular/cdk';
 import 'rxjs/add/operator/switchMap';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
+import {VideoService} from './services/video';
+import {NotifyService} from './services/notify';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,6 @@ import 'rxjs/add/observable/from';
         <md-error>Password is required</md-error>
       </md-input-container>
       <button [color]="'primary'" (click)="myLogin()"
-              [disabled]="xyz.invalid || xyz.pristine"
               md-raised-button fxFlexAlign="end" fxFlexAlign.xs="stretch">Login
         <md-icon>check</md-icon>
       </button>
@@ -43,8 +43,12 @@ export class LoginComponent {
 
   xyz: FormGroup;
   passwordControl: FormControl;
+  private notifyService: NotifyService;
+  private videoService: VideoService;
 
-  constructor() {
+  constructor(@Inject('xyz') ser: NotifyService, videoService: VideoService, @Inject('API_KEY') myKey: string) {
+    this.notifyService = ser;
+    this.videoService = videoService;
     const usernameControl = new FormControl(null, [Validators.required, Validators.email]);
     this.passwordControl = new FormControl();
 
@@ -64,15 +68,17 @@ export class LoginComponent {
     });
 
     const b = usernameControl.valueChanges.switchMap((value) => {
-      return 1000;
+      return Observable.interval(1000);
     });
 
-    b.subscribe((value) => {
-      console.log(value);
-    });
+    // b.subscribe((value) => {
+    //   console.log(value);
+    // });
   }
 
   myLogin() {
+    this.notifyService.notify('Suspicious login detected. please ....');
+    const videos = this.videoService.getVideoList();
   }
 
   doSomething(data: any) {
