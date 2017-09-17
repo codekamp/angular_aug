@@ -10,6 +10,7 @@ import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/from';
 import {InvidzService} from './services/invidz';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -24,10 +25,13 @@ import {InvidzService} from './services/invidz';
         <input [formControlName]="'password'" mdInput placeholder="Enter password"/>
         <md-error>Password is required</md-error>
       </md-input-container>
-      <button [color]="'primary'" (click)="myLogin()"
-              md-raised-button fxFlexAlign="end" fxFlexAlign.xs="stretch">Login
-        <md-icon>check</md-icon>
-      </button>
+      <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px">
+        <md-spinner *ngIf="loading"></md-spinner>
+        <button [color]="'primary'" (click)="myLogin()"
+                md-raised-button fxFlexAlign="end" fxFlexAlign.xs="stretch">Login
+          <md-icon>check</md-icon>
+        </button>
+      </div>
     </md-card>
   `,
   styles: [`
@@ -35,13 +39,19 @@ import {InvidzService} from './services/invidz';
       width: 700px;
       height: 600px;
     }
+
+    md-spinner {
+      width: 24px;
+      height: 24px;
+    }
   `]
 })
 export class LoginComponent {
 
   xyz: FormGroup;
+  loading = false;
 
-  constructor(private service: InvidzService) {
+  constructor(private service: InvidzService, private router: Router) {
 
     this.xyz = new FormGroup({
       username: new FormControl(null, [Validators.required, Validators.email]),
@@ -50,12 +60,25 @@ export class LoginComponent {
   }
 
   myLogin() {
+    this.loading = true;
     const output = this.service.login(this.xyz.get('username').value, this.xyz.get('password').value);
 
     output.subscribe(
-      (value) => console.log(value.json()),
-      (error) => console.log(error.json())
+      (value) => {
+        const response = value.json();
+        localStorage.setItem('my_login_token', response.token);
+        console.log(response.user.first_name);
+        this.loading = false;
+        this.router.navigate(['']);
+      },
+      (error) => {
+        console.log(error.json());
+        this.loading = false
+      }
     );
-    console.log('hello world!')
+    console
+      .log(
+        'hello world!'
+      )
   }
 }
