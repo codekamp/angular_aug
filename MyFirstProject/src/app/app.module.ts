@@ -14,23 +14,25 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {InvidzService} from './services/invidz';
 import {HttpModule} from '@angular/http';
-import {VideoComponent} from './components/videos';
+import {VideosComponent} from './components/videos';
 import {RouterModule} from '@angular/router';
 import {routes} from '../routes';
 import {NotFoundComponent} from './components/not-found';
 import {AuthGuard} from './guards/auth-guard';
 import {DashboardComponent} from './components/dashboard';
 import {AccountsComponent} from './components/accounts';
+import {SingleVideoComponent} from './components/single-video';
 
 @NgModule({
   declarations: [
     AppComponent,
     CodekampComponent,
     LoginComponent,
-    VideoComponent,
+    VideosComponent,
     NotFoundComponent,
     DashboardComponent,
-    AccountsComponent
+    AccountsComponent,
+    SingleVideoComponent
   ],
   imports: [
     BrowserAnimationsModule,

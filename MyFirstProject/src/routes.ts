@@ -1,18 +1,20 @@
 import {Route} from '@angular/router';
 import {LoginComponent} from './app/login';
-import {VideoComponent} from './app/components/videos';
+import {VideosComponent} from './app/components/videos';
 import {NotFoundComponent} from './app/components/not-found';
 import {AuthGuard} from './app/guards/auth-guard';
 import {DashboardComponent} from './app/components/dashboard';
 import {AccountsComponent} from './app/components/accounts';
+import {SingleVideoComponent} from './app/components/single-video';
 
 
 export const routes: Route[] = [
   {path: 'login', component: LoginComponent, canActivate: [AuthGuard]},
   {
-    path: '', component: DashboardComponent, canActivate: [AuthGuard],
+    path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
-      {path: '', component: VideoComponent},
+      {path: 'videos', component: VideosComponent},
+      {path: 'videos/:videoId', component: SingleVideoComponent},
       {path: 'accounts', component: AccountsComponent}
     ]
   },
