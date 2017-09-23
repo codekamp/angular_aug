@@ -15,23 +15,26 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-login',
   template: `
-    <md-card fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="30px">
+    <md-card>
       <h2>Login</h2>
-      <md-input-container class="username" [formGroup]="xyz">
-        <input [formControlName]="'username'" mdInput placeholder="Enter username"/>
-        <md-error>Username is required and should be a valid email</md-error>
-      </md-input-container>
-      <md-input-container class="password" [formGroup]="xyz">
-        <input [formControlName]="'password'" mdInput placeholder="Enter password"/>
-        <md-error>Password is required</md-error>
-      </md-input-container>
-      <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px">
-        <md-spinner *ngIf="loading"></md-spinner>
-        <button [color]="'primary'" (click)="myLogin()"
-                md-raised-button fxFlexAlign="end" fxFlexAlign.xs="stretch">Login
-          <md-icon>check</md-icon>
-        </button>
-      </div>
+      <form fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="30px" [formGroup]="xyz"
+            (submit)="xyz.valid && myLogin()">
+        <md-input-container class="username">
+          <input [formControlName]="'username'" mdInput placeholder="Enter username"/>
+          <md-error>Username is required and should be a valid email</md-error>
+        </md-input-container>
+        <md-input-container class="password">
+          <input formControlName="password" mdInput placeholder="Enter password"/>
+          <md-error>Password is required</md-error>
+        </md-input-container>
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px">
+          <md-spinner *ngIf="loading"></md-spinner>
+          <button [color]="'primary'"
+                  md-raised-button fxFlexAlign="end" fxFlexAlign.xs="stretch">Login
+            <md-icon>check</md-icon>
+          </button>
+        </div>
+      </form>
     </md-card>
   `,
   styles: [`
@@ -60,16 +63,15 @@ export class LoginComponent {
   }
 
   myLogin() {
+
     this.loading = true;
     const output = this.service.login(this.xyz.get('username').value, this.xyz.get('password').value);
 
     output.subscribe(
-      (value) => {
-        const response = value.json();
-        localStorage.setItem('my_login_token', response.token);
-        console.log(response.user.first_name);
+      (user) => {
+        console.log(user.email);
         this.loading = false;
-        this.router.navigate(['']);
+        this.router.navigate(['dashboard', 'videos']);
       },
       (error) => {
         console.log(error.json());

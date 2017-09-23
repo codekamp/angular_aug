@@ -6,10 +6,27 @@ import {AuthGuard} from './app/guards/auth-guard';
 import {DashboardComponent} from './app/components/dashboard';
 import {AccountsComponent} from './app/components/accounts';
 import {SingleVideoComponent} from './app/components/single-video';
+import {AnonGuard} from './app/guards/anon-guard';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 export const routes: Route[] = [
-  {path: 'login', component: LoginComponent, canActivate: [AuthGuard]},
+  {path: 'login', component: LoginComponent, canActivate: [AnonGuard]},
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [

@@ -1,40 +1,48 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {InvidzService} from '../services/invidz';
+import {Video} from 'app/models/video';
 
 @Component({
   selector: 'app-videos',
   template: `
-    <div>
-      Video list will go here
+    <md-spinner *ngIf="loading"></md-spinner>
+    <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="center">
+      <md-card *ngFor="let video of videos" fxLayout="column">
+        <img [src]="video.thumbnail" width="202px">
+        <h3>{{video.title | truncate}}</h3>
+      </md-card>
+      <span *appFlexAlignmentHack></span>
     </div>
   `,
   styles: [`
-    div {
-      height: 300px;
-      background: green;
-      color: white;
+    md-card, span {
+      width: 250px;
+      margin: 15px 10px;
+    }
+
+    span {
+      font-size: 100px;
     }
   `],
 })
-export class VideosComponent implements OnInit, OnChanges {
+export class VideosComponent implements OnInit {
 
-  @Input() videoType: string;
+  videos: Video[] = [];
 
-  count: number;
+  loading = false;
 
-  constructor(private route: ActivatedRoute) {
-    console.log('constructor of VideosComponent called and value of videoType is ' + this.videoType);
-
-
-    console.log('url in VideosComponent is ' + route.snapshot.toString());
+  constructor(private service: InvidzService) {
   }
 
   ngOnInit() {
-    console.log('ngOnInit of VideosComponent called and value of videoType is ' + this.videoType)
-  }
+    this.loading = true;
+    this.service.getVideos().subscribe((videos) => {
+      this.videos = videos;
+      this.loading = false;
+    });
 
-
-  ngOnChanges() {
-    console.log('ngOnChanges of VideosComponent called and value of videoType is ' + this.videoType)
+    console.log(this.loading);
   }
 }
+
+// https://angular.io/api?type=pipe

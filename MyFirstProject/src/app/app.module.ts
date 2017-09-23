@@ -22,6 +22,9 @@ import {AuthGuard} from './guards/auth-guard';
 import {DashboardComponent} from './components/dashboard';
 import {AccountsComponent} from './components/accounts';
 import {SingleVideoComponent} from './components/single-video';
+import {AnonGuard} from './guards/anon-guard';
+import {FlexAlignmentHackDirective} from './directives/flex-alignment-hack';
+import {TruncatePipe} from './pipes/truncate';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,9 @@ import {SingleVideoComponent} from './components/single-video';
     NotFoundComponent,
     DashboardComponent,
     AccountsComponent,
-    SingleVideoComponent
+    SingleVideoComponent,
+    FlexAlignmentHackDirective,
+    TruncatePipe
   ],
   imports: [
     BrowserAnimationsModule,
@@ -49,7 +54,7 @@ import {SingleVideoComponent} from './components/single-video';
     MdIconModule,
     MdProgressSpinnerModule,
   ],
-  providers: [InvidzService, AuthGuard],
+  providers: [InvidzService, AuthGuard, AnonGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

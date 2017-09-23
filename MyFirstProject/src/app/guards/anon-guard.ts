@@ -3,7 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {Injectable} from '@angular/core';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AnonGuard implements CanActivate {
 
   constructor(private router: Router) {}
 
@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
     if (!isLoggedIn) {
       return true;
     } else {
-      this.router.navigate(['']);
+      this.router.navigate(['dashboard', 'videos']);
       return false;
     }
   }
