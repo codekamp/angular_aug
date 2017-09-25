@@ -4,15 +4,10 @@ import {ActivatedRoute} from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   template: `
-    <div class="navigation">HEADER NAVIGATION</div>
+    <app-header></app-header>
     <router-outlet></router-outlet>
-    <div class="navigation">FOOTER NAVIGATION</div>
   `,
   styles: [`
-    .navigation {
-      height: 100px;
-      background: red;
-    }
   `]
 })
 export class DashboardComponent {

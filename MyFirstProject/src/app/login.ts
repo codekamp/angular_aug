@@ -34,13 +34,27 @@ import {Router} from '@angular/router';
             <md-icon>check</md-icon>
           </button>
         </div>
+        <md-input-container>
+          <input mdInput [mdDatepicker]="picker" placeholder="Choose a date">
+          <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+          <md-datepicker #picker></md-datepicker>
+        </md-input-container>
       </form>
     </md-card>
   `,
   styles: [`
+
+    :host {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      align-content: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
     md-card {
       width: 700px;
-      height: 600px;
     }
 
     md-spinner {

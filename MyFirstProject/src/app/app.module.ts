@@ -5,7 +5,9 @@ import 'hammerjs';
 import {AppComponent} from './app.component';
 import {CodekampComponent} from './codekamp';
 import {
-  MdButtonModule, MdCardModule, MdIconModule, MdInputModule, MdProgressSpinnerModule,
+  MdButtonModule, MdCardModule, MdDatepickerModule, MdDatepickerToggle, MdIconModule, MdInputModule, MdMenuModule,
+  MdNativeDateModule,
+  MdProgressSpinnerModule,
   MdSliderModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -25,6 +27,10 @@ import {SingleVideoComponent} from './components/single-video';
 import {AnonGuard} from './guards/anon-guard';
 import {FlexAlignmentHackDirective} from './directives/flex-alignment-hack';
 import {TruncatePipe} from './pipes/truncate';
+import {HeaderComponent} from './components/header';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from './reducers/index';
+import {MdFormFieldModule} from '@angular/material/typings/form-field';
 
 @NgModule({
   declarations: [
@@ -37,7 +43,8 @@ import {TruncatePipe} from './pipes/truncate';
     AccountsComponent,
     SingleVideoComponent,
     FlexAlignmentHackDirective,
-    TruncatePipe
+    TruncatePipe,
+    HeaderComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -53,6 +60,10 @@ import {TruncatePipe} from './pipes/truncate';
     MdInputModule,
     MdIconModule,
     MdProgressSpinnerModule,
+    MdMenuModule,
+    StoreModule.forRoot(reducers),
+    MdDatepickerModule,
+    MdNativeDateModule
   ],
   providers: [InvidzService, AuthGuard, AnonGuard],
   bootstrap: [AppComponent]
