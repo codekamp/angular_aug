@@ -1,7 +1,7 @@
 import {User} from '../models/user';
 import {Video} from '../models/video';
-import {Actions, LOGIN, VIDEOS_LOADED} from '../actions/index';
-import {ActionReducerMap} from '@ngrx/store';
+import {LOGIN, UPDATE_PROFILE, VIDEOS_LOADED} from '../actions/index';
+import {Action} from '@ngrx/store';
 
 export interface State {
   user: User;
@@ -13,30 +13,17 @@ const initialState: State = {
   videos: []
 }
 
-export const videoReducer = (state: Video[] = [], action: Actions): Video[] => {
-  console.log('reducer called', state, action);
+export function reducer(oldState: State = initialState, action: Action): State {
   switch (action.type) {
-    case VIDEOS_LOADED:
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
-export const userReducer = (state: User = null, action: Actions): User => {
-  console.log('reducer called', state, action);
-  switch (action.type) {
+    case UPDATE_PROFILE:
     case LOGIN:
-      return action.payload;
+      return {user: action.payload, videos: oldState.videos};
+    case VIDEOS_LOADED:
+      return {user: oldState.user, videos: action.payload};
     default:
-      return state;
+      return oldState;
   }
 }
-
-export const reducers: ActionReducerMap<State> = {
-  user: userReducer,
-  videos: videoReducer,
-};
 
 
 export const getUser = (state: State) => state.user;

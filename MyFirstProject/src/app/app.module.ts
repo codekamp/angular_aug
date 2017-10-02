@@ -29,8 +29,7 @@ import {FlexAlignmentHackDirective} from './directives/flex-alignment-hack';
 import {TruncatePipe} from './pipes/truncate';
 import {HeaderComponent} from './components/header';
 import {StoreModule} from '@ngrx/store';
-import {reducers} from './reducers/index';
-import {MdFormFieldModule} from '@angular/material/typings/form-field';
+import {reducer} from './reducers/index';
 
 @NgModule({
   declarations: [
@@ -61,7 +60,7 @@ import {MdFormFieldModule} from '@angular/material/typings/form-field';
     MdIconModule,
     MdProgressSpinnerModule,
     MdMenuModule,
-    StoreModule.forRoot(reducers),
+    StoreModule.provideStore(reducer),
     MdDatepickerModule,
     MdNativeDateModule
   ],

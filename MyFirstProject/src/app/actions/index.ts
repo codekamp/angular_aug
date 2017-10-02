@@ -1,8 +1,10 @@
 import {Action} from '@ngrx/store';
 import {User} from '../models/user';
 import {Video} from '../models/video';
+
 export const LOGIN = 'Login Action';
 export const VIDEOS_LOADED = 'Videos loaded Action';
+export const UPDATE_PROFILE = 'Update User Profile';
 
 
 export class LoginAction implements Action {
@@ -12,12 +14,17 @@ export class LoginAction implements Action {
   }
 }
 
+export class UserUpdateAction implements Action {
+  readonly type = UPDATE_PROFILE;
 
-export class VideosLoadedAction {
+  constructor(public payload: User) {
+  }
+}
+
+
+export class VideosLoadedAction implements Action {
   readonly type = VIDEOS_LOADED;
 
   constructor(public payload: Video[]) {
   }
 }
-
-export type Actions = LoginAction | VideosLoadedAction;

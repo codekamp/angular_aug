@@ -11,6 +11,9 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/from';
 import {InvidzService} from './services/invidz';
 import {Router} from '@angular/router';
+import {State} from './reducers/index';
+import {Store} from '@ngrx/store';
+import {LoginAction} from './actions/index';
 
 @Component({
   selector: 'app-login',
@@ -34,11 +37,6 @@ import {Router} from '@angular/router';
             <md-icon>check</md-icon>
           </button>
         </div>
-        <md-input-container>
-          <input mdInput [mdDatepicker]="picker" placeholder="Choose a date">
-          <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-          <md-datepicker #picker></md-datepicker>
-        </md-input-container>
       </form>
     </md-card>
   `,
@@ -61,6 +59,10 @@ import {Router} from '@angular/router';
       width: 24px;
       height: 24px;
     }
+
+    md-input-container {
+      width: 100%;
+    }
   `]
 })
 export class LoginComponent {
@@ -79,19 +81,17 @@ export class LoginComponent {
   myLogin() {
 
     this.loading = true;
-    const output = this.service.login(this.xyz.get('username').value, this.xyz.get('password').value);
-
-    output.subscribe(
-      (user) => {
-        console.log(user.email);
-        this.loading = false;
-        this.router.navigate(['dashboard', 'videos']);
-      },
-      (error) => {
-        console.log(error.json());
-        this.loading = false
-      }
-    );
+    this.service.login(this.xyz.get('username').value, this.xyz.get('password').value)
+      .subscribe(
+        (user) => {
+          this.loading = false;
+          this.router.navigate(['dashboard', 'videos']);
+        },
+        (error) => {
+          console.log(error.json());
+          this.loading = false
+        }
+      );
     console
       .log(
         'hello world!'
