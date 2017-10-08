@@ -5,6 +5,7 @@ import {Video} from '../models/video';
 export const LOGIN = 'Login Action';
 export const VIDEOS_LOADED = 'Videos loaded Action';
 export const UPDATE_PROFILE = 'Update User Profile';
+export const VIDEO_ADDED = 'Video added';
 
 
 export class LoginAction implements Action {
@@ -26,5 +27,13 @@ export class VideosLoadedAction implements Action {
   readonly type = VIDEOS_LOADED;
 
   constructor(public payload: Video[]) {
+  }
+}
+
+
+export class VideoAddedAction implements Action {
+  readonly type = VIDEO_ADDED;
+
+  constructor(public payload: Video) {
   }
 }

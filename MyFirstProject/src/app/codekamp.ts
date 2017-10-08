@@ -1,57 +1,29 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {MdSliderChange} from '@angular/material';
+import {Component} from '@angular/core';
+import {growShrinkAnimation} from './animations/grow-shring';
 
 @Component({
   selector: 'app-codekamp',
   template: `
     <md-card>
-      <span>Created by:</span>
-      <h3>{{createdBy}}</h3>
-      <button md-raised-button [color]="'primary'" (click)="onYes()">Yes</button>
-      <button md-raised-button [color]="'accent'" (click)="onCancel()">Cancel</button>
-      <md-slider
-        style="width: 500px;"
-        [invert]="false"
-        [max]="100"
-        [min]="0"
-        [step]="2"
-        [thumb-label]="true"
-        [value]="90"
-        [vertical]="false"
-        (change)="myAwesomeFunction($event)"
-      >
-      </md-slider>
+      <div></div>
+      <button [@growShrink]="divState" md-raised-button color="accent" (click)="this.divState='big'">grow</button>
+      <button md-raised-button color="accent" (click)="this.divState='small'">shrink</button>
+      <button md-raised-button color="accent" (click)="this.divState='really-big'">really big</button>
     </md-card>
   `
   ,
   styles: [`
-    span {
-      color: #bbbbbb;
+    div {
+      width: 100px;
+      height: 100px;
     }
+  `],
 
-    h3 {
-      color: red;
-    }
-  `]
+  animations: [growShrinkAnimation]
 })
 
 export class CodekampComponent {
-  @Input() createdBy: string;
-  @Output() onConfirm = new EventEmitter<string>();
 
-  constructor() {
-  }
+  divState = 'small';
 
-  onYes() {
-    this.createdBy = 'Some random value';
-    this.onConfirm.next('India');
-  }
-
-  onCancel() {
-    console.log('cancel button clicked');
-  }
-
-  myAwesomeFunction(input: MdSliderChange) {
-    console.log(input.value);
-  }
 }

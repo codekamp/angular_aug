@@ -23,7 +23,15 @@ export class InvidzService {
 
 
   login(email: string, password): Observable<User> {
-    return this.http.get(BASE_URL + 'authenticate?email=' + email + '&password=' + password)
+    const options = new RequestOptions({headers: new Headers(), params: new URLSearchParams()});
+
+    options.headers.append('my_awesome_header_key', 'My awesome header value');
+    options.headers.append('another_header', 'another header value');
+
+    options.params.append('email', email);
+    options.params.append('password', password);
+
+    return this.http.get(BASE_URL + 'authenticate', options)
       .map((value) => {
         const res = value.json();
         localStorage.setItem(LOGIN_TOKEN_KEY, res.token);
@@ -34,9 +42,7 @@ export class InvidzService {
   }
 
   getVideos(): Observable<Video[]> {
-    const options = new RequestOptions({headers: new Headers()});
-    options.headers.append('Authorization', 'bearer ' + localStorage.getItem(LOGIN_TOKEN_KEY));
-    return this.http.get(BASE_URL + 'videos', options).map((value) => {
+    return this.http.get(BASE_URL + 'videos', this.requestOptions()).map((value) => {
       const videos = value.json().data;
       this.store.dispatch(new VideosLoadedAction(videos));
       return videos;
@@ -44,9 +50,7 @@ export class InvidzService {
   }
 
   getProfile(): Observable<User> {
-    const options = new RequestOptions({headers: new Headers()});
-    options.headers.append('Authorization', 'bearer ' + localStorage.getItem(LOGIN_TOKEN_KEY));
-    return this.http.get(BASE_URL + 'me', options).map((value) => {
+    return this.http.get(BASE_URL + 'me', this.requestOptions()).map((value) => {
       const user = value.json().data;
       this.store.dispatch(new UserUpdateAction(user));
       return user;
@@ -56,6 +60,14 @@ export class InvidzService {
   logout() {
     localStorage.removeItem(LOGIN_TOKEN_KEY);
     this.router.navigate(['login'])
+  }
+
+  private requestOptions() {
+    const options = new RequestOptions({headers: new Headers()});
+    if (localStorage.getItem(LOGIN_TOKEN_KEY)) {
+      options.headers.append('Authorization', 'bearer ' + localStorage.getItem(LOGIN_TOKEN_KEY));
+    }
+    return options;
   }
 
   handleError(error: any): Observable<Error> {

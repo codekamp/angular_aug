@@ -10,7 +10,7 @@ import {User} from '../models/user';
   template: `
     <div class="navigation" fxLayout="row">
       <img src="../assets/images/logo.png"/>
-      <button [ngClass]="{'selected': path === 'accounts', 'anotherClass': someCondition}" md-button>accounts</button>
+      <button [ngClass]="{'my-awesome-class': path === 'accounts', 'anotherClass': someCondition}" md-button>accounts</button>
       <button [ngClass]="{'selected': path === 'ctas'}" md-button>call to actions</button>
       <button md-button>videos</button>
       <button md-button>emails</button>
