@@ -16,8 +16,8 @@ import {User} from '../models/user';
       <button md-button>emails</button>
       <button md-button>templates</button>
       <span fxFlex="1 1 auto"></span>
-      <button (click)="changeUsername()">Change Username</button>
-      <md-spinner *ngIf="!user"></md-spinner>
+      <!--<button (click)="changeUsername()">Change Username</button>-->
+      <!--<md-spinner *ngIf="!user"></md-spinner>-->
       <button *ngIf="user" md-button [mdMenuTriggerFor]="myMenu">{{name}}
         <md-icon>keyboard_arrow_down</md-icon>
       </button>

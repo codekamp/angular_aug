@@ -7,6 +7,9 @@ import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {State} from '../reducers/index';
 import {LoginAction, UserUpdateAction, VideosLoadedAction} from '../actions/index';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/of';
+import {Error} from '../models/error';
 
 
 const BASE_URL = 'https://api.invidz.com/api/';
@@ -27,7 +30,7 @@ export class InvidzService {
         this.store.dispatch(new LoginAction(res.user));
         console.log('action fired');
         return res.user;
-      });
+      }).catch(this.handleError.bind(this));
   }
 
   getVideos(): Observable<Video[]> {
@@ -37,7 +40,7 @@ export class InvidzService {
       const videos = value.json().data;
       this.store.dispatch(new VideosLoadedAction(videos));
       return videos;
-    })
+    }).catch(this.handleError.bind(this));
   }
 
   getProfile(): Observable<User> {
@@ -47,11 +50,27 @@ export class InvidzService {
       const user = value.json().data;
       this.store.dispatch(new UserUpdateAction(user));
       return user;
-    });
+    }).catch(this.handleError.bind(this));
   }
 
   logout() {
     localStorage.removeItem(LOGIN_TOKEN_KEY);
     this.router.navigate(['login'])
+  }
+
+  handleError(error: any): Observable<Error> {
+    if (error.type === 3) {
+      throw {message: 'Internet not available'};
+    } else if (error.type === 2) {
+      if (error.status === 401) {
+        localStorage.removeItem(LOGIN_TOKEN_KEY);
+        this.router.navigate(['/login']);
+      }
+      const message = error.json().message;
+      console.log(error, message);
+      throw {message: message};
+    } else {
+      throw {message: 'unknown error occured'};
+    }
   }
 }

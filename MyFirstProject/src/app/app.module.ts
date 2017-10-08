@@ -8,7 +8,7 @@ import {
   MdButtonModule, MdCardModule, MdDatepickerModule, MdDatepickerToggle, MdIconModule, MdInputModule, MdMenuModule,
   MdNativeDateModule,
   MdProgressSpinnerModule,
-  MdSliderModule
+  MdSliderModule, MdSnackBarModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginComponent} from './login';
@@ -29,7 +29,9 @@ import {FlexAlignmentHackDirective} from './directives/flex-alignment-hack';
 import {TruncatePipe} from './pipes/truncate';
 import {HeaderComponent} from './components/header';
 import {StoreModule} from '@ngrx/store';
-import {reducer} from './reducers/index';
+import {myReducer} from './reducers/index';
+import {AlertService} from './services/alert';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -60,11 +62,13 @@ import {reducer} from './reducers/index';
     MdIconModule,
     MdProgressSpinnerModule,
     MdMenuModule,
-    StoreModule.provideStore(reducer),
+    StoreModule.provideStore(myReducer),
+    StoreDevtoolsModule.instrumentOnlyWithExtension(),
     MdDatepickerModule,
-    MdNativeDateModule
+    MdNativeDateModule,
+    MdSnackBarModule
   ],
-  providers: [InvidzService, AuthGuard, AnonGuard],
+  providers: [AlertService, InvidzService, AuthGuard, AnonGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

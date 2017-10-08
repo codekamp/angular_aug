@@ -1,6 +1,17 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 body {
-  background: pink;
   margin: 0;
+}
+
+.success-alert {
+  background-color: #dff0d8;
+  border-color: #d0e9c6;
+  color: #3c763d;
+}
+
+.error-alert {
+  background-color: #f2dede;
+  border-color: #ebcccc;
+  color: #a94442;
 }

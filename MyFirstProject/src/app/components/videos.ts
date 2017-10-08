@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {InvidzService} from '../services/invidz';
 import {Video} from 'app/models/video';
+import {MdSnackBar} from '@angular/material';
+import {AlertService} from '../services/alert';
 
 @Component({
   selector: 'app-videos',
@@ -31,14 +33,18 @@ export class VideosComponent implements OnInit {
 
   loading = false;
 
-  constructor(private service: InvidzService) {
+  constructor(private service: InvidzService, private alertService: AlertService) {
   }
 
   ngOnInit() {
     this.loading = true;
-    this.service.getVideos().subscribe((videos) => {
+    this.service.getVideos().subscribe(videos => {
       this.videos = videos;
       this.loading = false;
+      this.alertService.success('vidoes loaded successfully');
+    }, error => {
+      this.loading = false;
+      this.alertService.error(error.message)
     });
 
     console.log(this.loading);
