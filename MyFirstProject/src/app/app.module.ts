@@ -5,7 +5,8 @@ import 'hammerjs';
 import {AppComponent} from './app.component';
 import {CodekampComponent} from './codekamp';
 import {
-  MdButtonModule, MdCardModule, MdDatepickerModule, MdDatepickerToggle, MdIconModule, MdInputModule, MdMenuModule,
+  MdButtonModule, MdCardModule, MdDatepickerModule, MdDatepickerToggle, MdDialogModule, MdIconModule, MdInputModule,
+  MdMenuModule,
   MdNativeDateModule,
   MdProgressSpinnerModule,
   MdSliderModule, MdSnackBarModule
@@ -32,6 +33,8 @@ import {StoreModule} from '@ngrx/store';
 import {myReducer} from './reducers/index';
 import {AlertService} from './services/alert';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import { MyAswsomeComponentComponent } from './my-aswsome-component/my-aswsome-component.component';
+import {ConfirmationComponent} from 'app/components/confirmation';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,9 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     SingleVideoComponent,
     FlexAlignmentHackDirective,
     TruncatePipe,
-    HeaderComponent
+    HeaderComponent,
+    MyAswsomeComponentComponent,
+    ConfirmationComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -66,10 +71,12 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
     MdDatepickerModule,
     MdNativeDateModule,
-    MdSnackBarModule
+    MdSnackBarModule,
+    MdDialogModule
   ],
   providers: [AlertService, InvidzService, AuthGuard, AnonGuard],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ConfirmationComponent]
 })
 export class AppModule {
 }

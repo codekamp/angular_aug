@@ -6,7 +6,7 @@ import {User} from '../models/user';
 import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {State} from '../reducers/index';
-import {LoginAction, UserUpdateAction, VideosLoadedAction} from '../actions/index';
+import {LoginAction, UserUpdateAction, VideosLoadedAction, VideosLoadingAction} from '../actions/index';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import {Error} from '../models/error';
@@ -42,6 +42,7 @@ export class InvidzService {
   }
 
   getVideos(): Observable<Video[]> {
+    this.store.dispatch(new VideosLoadingAction());
     return this.http.get(BASE_URL + 'videos', this.requestOptions()).map((value) => {
       const videos = value.json().data;
       this.store.dispatch(new VideosLoadedAction(videos));
@@ -50,6 +51,7 @@ export class InvidzService {
   }
 
   getProfile(): Observable<User> {
+    console.log('fetching user profile');
     return this.http.get(BASE_URL + 'me', this.requestOptions()).map((value) => {
       const user = value.json().data;
       this.store.dispatch(new UserUpdateAction(user));

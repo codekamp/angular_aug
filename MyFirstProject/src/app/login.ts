@@ -11,9 +11,14 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/from';
 import {InvidzService} from './services/invidz';
 import {Router} from '@angular/router';
-import {State} from './reducers/index';
+import {getUser, State} from './reducers/index';
 import {Store} from '@ngrx/store';
 import {LoginAction} from './actions/index';
+import {MdDialog} from '@angular/material';
+import {NotFoundComponent} from './components/not-found';
+import {ConfirmationComponent} from './components/confirmation';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +53,6 @@ import {LoginAction} from './actions/index';
       align-items: center;
       align-content: center;
       justify-content: center;
-      height: 100vh;
     }
 
     md-card {
@@ -70,31 +74,43 @@ export class LoginComponent {
   xyz: FormGroup;
   loading = false;
 
-  constructor(private service: InvidzService, private router: Router) {
+  constructor(private service: InvidzService, private router: Router, private dialog: MdDialog, private store: Store<State>) {
 
     this.xyz = new FormGroup({
-      username: new FormControl(null, [Validators.required, Validators.email]),
+      username: new FormControl(null),
       password: new FormControl()
     });
   }
 
   myLogin() {
 
-    this.loading = true;
-    this.service.login(this.xyz.get('username').value, this.xyz.get('password').value)
-      .subscribe(
-        (user) => {
-          this.loading = false;
-          this.router.navigate(['dashboard', 'videos']);
-        },
-        (error) => {
-          console.log(error.json());
-          this.loading = false
-        }
-      );
-    console
-      .log(
-        'hello world!'
-      )
+    const dialogRef = this.dialog.open(ConfirmationComponent, {disableClose: true, data: {message: 'Are you sure you want to delete this video?', okText: 'Delete'}});
+    // dialogRef.updateSize('60%', '80%');
+    //
+    // dialogRef.componentInstance.message = 'Are you sure you want to delete this video?';
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('delete the item');
+      } else {
+        console.log('cancel delete');
+      }
+    });
+
+
+
+
+    // this.loading = true;
+    // this.service.login(this.xyz.get('username').value, this.xyz.get('password').value)
+    //   .subscribe(
+    //     (user) => {
+    //       this.loading = false;
+    //       this.router.navigate(['dashboard', 'videos']);
+    //     },
+    //     (error) => {
+    //       console.log(error.json());
+    //       this.loading = false
+    //     }
+    //   );
   }
 }

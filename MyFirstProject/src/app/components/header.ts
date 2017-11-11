@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {InvidzService} from '../services/invidz';
 import {Store} from '@ngrx/store';
 import {getUser, getVideos, State} from '../reducers/index';
 import {LoginAction, UserUpdateAction} from '../actions/index';
 import {User} from '../models/user';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-header',
@@ -39,17 +40,20 @@ import {User} from '../models/user';
     }
   `]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   name = '';
   user: User;
+
+  alive = true;
 
   constructor(private service: InvidzService, private store: Store<State>) {
   }
 
   ngOnInit() {
     const user$ = this.store.select(getUser);
-    user$.subscribe((user) => {
+    user$.takeWhile(() => this.alive).subscribe((user) => {
+      console.log('user profile', user);
       if (!user) {
         this.service.getProfile().subscribe();
         return;
@@ -61,6 +65,10 @@ export class HeaderComponent implements OnInit {
     videos$.subscribe((videos) => {
       console.log('event fired on videos$', videos);
     });
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 
   logout() {
