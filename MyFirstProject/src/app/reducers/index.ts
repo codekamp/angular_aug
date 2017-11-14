@@ -1,39 +1,29 @@
-import {User} from '../models/user';
-import {Video} from '../models/video';
-import {LOGIN, UPDATE_PROFILE, VIDEO_ADDED, VIDEOS_LOADED, VIDEOS_LOADING} from '../actions/index';
-import {Action} from '@ngrx/store';
+import {Action, combineReducers} from '@ngrx/store';
 import {storeFreeze} from 'ngrx-store-freeze';
 import {environment} from '../../environments/environment';
+import {videoReducer, VideoState} from './videos';
+import {emailReducer, EmailState} from './emails';
+import * as fromUser from './user';
+import * as fromVideos from './videos';
+import {userReducer, UserState} from './user';
 
 export interface State {
-  user: User;
-  videos: Video[];
-  videosLoading: boolean;
-  videosLoaded: boolean;
+  videos: VideoState;
+  emails: EmailState;
+  user: UserState;
 }
 
 const initialState: State = {
-  user: null,
-  videos: [],
-  videosLoaded: false,
-  videosLoading: false
+  videos: fromVideos.initialState,
+  emails: null,
+  user: fromUser.initialState
 }
 
-export function reducer(oldState: State, action: Action): State {
-  switch (action.type) {
-    case UPDATE_PROFILE:
-    case LOGIN:
-      return {...oldState, ...{user: action.payload}};
-    case VIDEOS_LOADING:
-      return {...oldState, ...{videosLoading: true}};
-    case VIDEOS_LOADED:
-      return {...oldState, ...{videos: action.payload, videosLoaded: true, videosLoading: false}};
-    case VIDEO_ADDED:
-      return {...oldState, ...{videos: [...oldState.videos, action.payload]}};
-    default:
-      return oldState;
-  }
-}
+const reducer = combineReducers({
+  videos: videoReducer,
+  emails: emailReducer,
+  user: userReducer
+});
 
 export function myReducer(oldState: State = initialState, action: Action) {
   if (environment.production) {
@@ -45,5 +35,6 @@ export function myReducer(oldState: State = initialState, action: Action) {
 }
 
 
-export const getUser = (state: State) => state.user;
-export const getVideos = (state: State) => state.videos;
+export const getUser = (state: State) => fromUser.getUser(state.user);
+export const getVideos = (state: State) => fromVideos.getVideos(state.videos);
+export const getVideosLoading = (state: State) => fromVideos.getLoading(state.videos);

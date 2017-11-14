@@ -19,6 +19,7 @@ import {NotFoundComponent} from './components/not-found';
 import {ConfirmationComponent} from './components/confirmation';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/takeWhile';
+import {StringUtils} from './utils/string';
 
 @Component({
   selector: 'app-login',
@@ -84,33 +85,34 @@ export class LoginComponent {
 
   myLogin() {
 
-    const dialogRef = this.dialog.open(ConfirmationComponent, {disableClose: true, data: {message: 'Are you sure you want to delete this video?', okText: 'Delete'}});
-    // dialogRef.updateSize('60%', '80%');
+    // const dialogRef = this.dialog.open(ConfirmationComponent, {
+    //   disableClose: true,
+    //   data: {message: 'Are you sure you want to delete this video?', okText: 'Delete'}
+    // });
+    // // dialogRef.updateSize('60%', '80%');
+    // //
+    // // dialogRef.componentInstance.message = 'Are you sure you want to delete this video?';
     //
-    // dialogRef.componentInstance.message = 'Are you sure you want to delete this video?';
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('delete the item');
-      } else {
-        console.log('cancel delete');
-      }
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     console.log('delete the item');
+    //   } else {
+    //     console.log('cancel delete');
+    //   }
+    // });
 
 
-
-
-    // this.loading = true;
-    // this.service.login(this.xyz.get('username').value, this.xyz.get('password').value)
-    //   .subscribe(
-    //     (user) => {
-    //       this.loading = false;
-    //       this.router.navigate(['dashboard', 'videos']);
-    //     },
-    //     (error) => {
-    //       console.log(error.json());
-    //       this.loading = false
-    //     }
-    //   );
+    this.loading = true;
+    this.service.login(this.xyz.get('username').value, this.xyz.get('password').value)
+      .subscribe(
+        (user) => {
+          this.loading = false;
+          this.router.navigate(['dashboard', 'videos']);
+        },
+        (error) => {
+          console.log(error.json());
+          this.loading = false
+        }
+      );
   }
 }

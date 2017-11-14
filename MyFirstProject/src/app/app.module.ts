@@ -33,7 +33,6 @@ import {StoreModule} from '@ngrx/store';
 import {myReducer} from './reducers/index';
 import {AlertService} from './services/alert';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import { MyAswsomeComponentComponent } from './my-aswsome-component/my-aswsome-component.component';
 import {ConfirmationComponent} from 'app/components/confirmation';
 
 @NgModule({
@@ -49,7 +48,6 @@ import {ConfirmationComponent} from 'app/components/confirmation';
     FlexAlignmentHackDirective,
     TruncatePipe,
     HeaderComponent,
-    MyAswsomeComponentComponent,
     ConfirmationComponent
   ],
   imports: [
