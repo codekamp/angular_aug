@@ -39,5 +39,7 @@ export function videoReducer(oldState: VideoState = initialState, action: Action
   }
 }
 
-export const getVideos = (state: VideoState) => StoreUtils.unnormalize(state.entities);
+export const getAll = (state: VideoState) => StoreUtils.unnormalize(state.entities);
+export const get = (state: VideoState, id: number) => this.entities ? state.entities[id] : null;
 export const getLoading = (state: VideoState) => state.loading;
+export const getLoaded = (state: VideoState) => state.loaded;

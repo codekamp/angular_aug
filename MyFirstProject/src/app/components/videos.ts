@@ -3,6 +3,8 @@ import {InvidzService} from '../services/invidz';
 import {Video} from 'app/models/video';
 import {MdSnackBar} from '@angular/material';
 import {AlertService} from '../services/alert';
+import {Store} from '@ngrx/store';
+import {getVideos, getVideosLoaded, getVideosLoading, State} from '../reducers/index';
 
 @Component({
   selector: 'app-videos',
@@ -31,23 +33,26 @@ export class VideosComponent implements OnInit {
 
   videos: Video[] = [];
 
-  loading = false;
+  loading = true;
 
-  constructor(private service: InvidzService, private alertService: AlertService) {
+  constructor(private service: InvidzService, private alertService: AlertService, private store: Store<State>) {
   }
 
   ngOnInit() {
-    this.loading = true;
-    this.service.getVideos().subscribe(videos => {
-      this.videos = videos;
-      this.loading = false;
-      this.alertService.success('vidoes loaded successfully');
-    }, error => {
-      this.loading = false;
-      this.alertService.error(error.message)
-    });
+    const loading$ = this.store.select(getVideosLoading);
+    const loaded$ = this.store.select(getVideosLoaded);
+    const videos$ = this.store.select(getVideos);
 
-    console.log(this.loading);
+    loading$.combineLatest(loaded$, videos$, (loading, loaded, videos) => {
+      return {loading, loaded, videos};
+    }).subscribe(data => {
+      this.loading = data.loading;
+      this.videos = data.videos;
+
+      if (!data.loading && !data.loaded) {
+        this.service.getVideos().subscribe();
+      }
+    });
   }
 }
 

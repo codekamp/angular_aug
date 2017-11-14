@@ -6,7 +6,7 @@ export class StoreUtils {
   static normalize(entities: Entity[]): { [id: number]: any } {
 
     return entities.reduce((map, entity) => {
-      return {...map, ...{[entity.id]: entity}};
+      return {...map, [entity.id]: entity};
     }, {});
   }
 
