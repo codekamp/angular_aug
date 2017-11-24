@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {InvidzService} from '../services/invidz';
 import {Video} from 'app/models/video';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 import {AlertService} from '../services/alert';
 import {Store} from '@ngrx/store';
 import {getVideos, getVideosLoaded, getVideosLoading, State} from '../reducers/index';
@@ -9,17 +9,17 @@ import {getVideos, getVideosLoaded, getVideosLoading, State} from '../reducers/i
 @Component({
   selector: 'app-videos',
   template: `
-    <md-spinner *ngIf="loading"></md-spinner>
+    <mat-spinner *ngIf="loading"></mat-spinner>
     <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="center">
-      <md-card *ngFor="let video of videos" fxLayout="column">
+      <mat-card *ngFor="let video of videos" fxLayout="column">
         <img [src]="video.thumbnail" width="202px">
         <h3>{{video.title | truncate}}</h3>
-      </md-card>
+      </mat-card>
       <span *appFlexAlignmentHack></span>
     </div>
   `,
   styles: [`
-    md-card, span {
+    mat-card, span {
       width: 250px;
       margin: 15px 10px;
     }
@@ -50,7 +50,7 @@ export class VideosComponent implements OnInit {
       this.videos = data.videos;
 
       if (!data.loading && !data.loaded) {
-        this.service.getVideos().subscribe();
+        this.service.getVideos().subscribe(null, error => this.alertService.error(error.message));
       }
     });
   }

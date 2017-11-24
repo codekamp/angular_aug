@@ -4,12 +4,12 @@ import {growShrinkAnimation} from './animations/grow-shring';
 @Component({
   selector: 'app-codekamp',
   template: `
-    <md-card>
+    <mat-card>
       <div></div>
-      <button [@growShrink]="divState" md-raised-button color="accent" (click)="this.divState='big'">grow</button>
-      <button md-raised-button color="accent" (click)="this.divState='small'">shrink</button>
-      <button md-raised-button color="accent" (click)="this.divState='really-big'">really big</button>
-    </md-card>
+      <button [@growShrink]="divState" mat-raised-button color="accent" (click)="this.divState='big'">grow</button>
+      <button mat-raised-button color="accent" (click)="this.divState='small'">shrink</button>
+      <button mat-raised-button color="accent" (click)="this.divState='really-big'">really big</button>
+    </mat-card>
   `
   ,
   styles: [`

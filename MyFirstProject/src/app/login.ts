@@ -14,7 +14,7 @@ import {Router} from '@angular/router';
 import {getUser, State} from './reducers/index';
 import {Store} from '@ngrx/store';
 import {LoginAction} from './actions/index';
-import {MdDialog} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {NotFoundComponent} from './components/not-found';
 import {ConfirmationComponent} from './components/confirmation';
 import {Observable} from 'rxjs/Observable';
@@ -24,27 +24,27 @@ import {StringUtils} from './utils/string';
 @Component({
   selector: 'app-login',
   template: `
-    <md-card>
+    <mat-card>
       <h2>Login</h2>
       <form fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="30px" [formGroup]="xyz"
             (submit)="xyz.valid && myLogin()">
-        <md-input-container class="username">
-          <input [formControlName]="'username'" mdInput placeholder="Enter username"/>
-          <md-error>Username is required and should be a valid email</md-error>
-        </md-input-container>
-        <md-input-container class="password">
-          <input formControlName="password" mdInput placeholder="Enter password"/>
-          <md-error>Password is required</md-error>
-        </md-input-container>
+        <mat-form-field class="username">
+          <input [formControlName]="'username'" matInput placeholder="Enter username"/>
+          <mat-error>Username is required and should be a valid email</mat-error>
+        </mat-form-field>
+        <mat-form-field class="password">
+          <input formControlName="password" matInput placeholder="Enter password"/>
+          <mat-error>Password is required</mat-error>
+        </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px">
-          <md-spinner *ngIf="loading"></md-spinner>
+          <mat-spinner *ngIf="loading"></mat-spinner>
           <button [color]="'primary'"
-                  md-raised-button fxFlexAlign="end" fxFlexAlign.xs="stretch">Login
-            <md-icon>check</md-icon>
+                  mat-raised-button fxFlexAlign="end" fxFlexAlign.xs="stretch">Login
+            <mat-icon>check</mat-icon>
           </button>
         </div>
       </form>
-    </md-card>
+    </mat-card>
   `,
   styles: [`
 
@@ -56,16 +56,16 @@ import {StringUtils} from './utils/string';
       justify-content: center;
     }
 
-    md-card {
+    mat-card {
       width: 700px;
     }
 
-    md-spinner {
+    mat-spinner {
       width: 24px;
       height: 24px;
     }
 
-    md-input-container {
+    mat-form-field {
       width: 100%;
     }
   `]
@@ -75,7 +75,7 @@ export class LoginComponent {
   xyz: FormGroup;
   loading = false;
 
-  constructor(private service: InvidzService, private router: Router, private dialog: MdDialog, private store: Store<State>) {
+  constructor(private service: InvidzService, private router: Router, private dialog: MatDialog, private store: Store<State>) {
 
     this.xyz = new FormGroup({
       username: new FormControl(null),

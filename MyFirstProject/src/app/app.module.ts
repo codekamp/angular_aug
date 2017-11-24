@@ -5,11 +5,17 @@ import 'hammerjs';
 import {AppComponent} from './app.component';
 import {CodekampComponent} from './codekamp';
 import {
-  MdButtonModule, MdCardModule, MdDatepickerModule, MdDatepickerToggle, MdDialogModule, MdIconModule, MdInputModule,
-  MdMenuModule,
-  MdNativeDateModule,
-  MdProgressSpinnerModule,
-  MdSliderModule, MdSnackBarModule
+  MatButtonModule,
+  MatCardModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatIconModule,
+  MatInputModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatProgressSpinnerModule,
+  MatSliderModule,
+  MatSnackBarModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginComponent} from './login';
@@ -30,10 +36,11 @@ import {FlexAlignmentHackDirective} from './directives/flex-alignment-hack';
 import {TruncatePipe} from './pipes/truncate';
 import {HeaderComponent} from './components/header';
 import {StoreModule} from '@ngrx/store';
-import {myReducer} from './reducers/index';
+import {reducers} from './reducers/index';
 import {AlertService} from './services/alert';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {ConfirmationComponent} from 'app/components/confirmation';
+import {environment} from 'environments/environment';
 
 @NgModule({
   declarations: [
@@ -58,19 +65,19 @@ import {ConfirmationComponent} from 'app/components/confirmation';
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
     FlexLayoutModule,
-    MdButtonModule,
-    MdCardModule,
-    MdSliderModule,
-    MdInputModule,
-    MdIconModule,
-    MdProgressSpinnerModule,
-    MdMenuModule,
-    StoreModule.provideStore(myReducer),
-    StoreDevtoolsModule.instrumentOnlyWithExtension(),
-    MdDatepickerModule,
-    MdNativeDateModule,
-    MdSnackBarModule,
-    MdDialogModule
+    MatButtonModule,
+    MatCardModule,
+    MatSliderModule,
+    MatInputModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatMenuModule,
+    StoreModule.forRoot(reducers),
+    !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [],
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [AlertService, InvidzService, AuthGuard, AnonGuard],
   bootstrap: [AppComponent],

@@ -9,7 +9,7 @@ import {Subscription} from 'rxjs/Subscription';
   template: `
     <div>
       Title: my video number {{id}}
-      <button md-raised-button (click)="nextVideo()" color="primary">Next</button>
+      <button mat-raised-button (click)="nextVideo()" color="primary">Next</button>
     </div>
   `,
   styles: [`

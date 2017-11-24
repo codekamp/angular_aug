@@ -1,6 +1,5 @@
 import {Email} from '../models/email';
-import {VideoState} from './videos';
-import {Action} from '@ngrx/store';
+import {Action} from '../actions/action';
 
 export interface EmailState {
   ids: number[];

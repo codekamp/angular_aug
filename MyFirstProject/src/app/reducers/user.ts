@@ -1,4 +1,4 @@
-import {Action} from '@ngrx/store';
+import {Action} from '../actions/action';
 import {User} from '../models/user';
 import {LOGIN, UPDATE_PROFILE} from '../actions/index';
 

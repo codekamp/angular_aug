@@ -1,6 +1,6 @@
 import {Video} from '../models/video';
-import {Action} from '@ngrx/store';
-import {VIDEO_ADDED, VIDEOS_LOADED, VIDEOS_LOADING} from '../actions/index';
+import {Action} from '../actions/action';
+import {VIDEO_ADDED, VIDEO_DELETED, VIDEOS_LOADED, VIDEOS_LOADING} from '../actions/index';
 import {StoreUtils} from '../utils/store';
 
 export interface VideoState {
@@ -29,11 +29,17 @@ export function videoReducer(oldState: VideoState = initialState, action: Action
           ids: StoreUtils.getIds(videos), loaded: true, loading: false
         }
       };
-    case VIDEO_ADDED:
+    case VIDEO_ADDED: {
       const video = action.payload;
       const newIds = [...oldState.ids, video.id];
       const newEntities = {...oldState.entities, ...{[video.id]: video}};
       return {...oldState, ...{entities: newEntities, ids: newIds}};
+    }
+    case VIDEO_DELETED: {
+      const newIds = oldState.ids.filter(id => id !== action.payload);
+      const newEntities = StoreUtils.removeKey(oldState.entities, action.payload);
+      return {...oldState, ...{entities: newEntities, ids: newIds}};
+    }
     default:
       return oldState;
   }

@@ -11,26 +11,26 @@ import {Subscription} from 'rxjs/Subscription';
   template: `
     <div class="navigation" fxLayout="row">
       <img src="../assets/images/logo.png"/>
-      <button [ngClass]="{'my-awesome-class': path === 'accounts', 'anotherClass': someCondition}" md-button>accounts</button>
-      <button [ngClass]="{'selected': path === 'ctas'}" md-button>call to actions</button>
-      <button md-button>videos</button>
-      <button md-button>emails</button>
-      <button md-button>templates</button>
+      <button [ngClass]="{'my-awesome-class': path === 'accounts', 'anotherClass': someCondition}" mat-button>accounts</button>
+      <button [ngClass]="{'selected': path === 'ctas'}" mat-button>call to actions</button>
+      <button mat-button>videos</button>
+      <button mat-button>emails</button>
+      <button mat-button>templates</button>
       <span fxFlex="1 1 auto"></span>
       <!--<button (click)="changeUsername()">Change Username</button>-->
-      <!--<md-spinner *ngIf="!user"></md-spinner>-->
-      <button *ngIf="user" md-button [mdMenuTriggerFor]="myMenu">{{name}}
-        <md-icon>keyboard_arrow_down</md-icon>
+      <!--<mat-spinner *ngIf="!user"></mat-spinner>-->
+      <button *ngIf="user" mat-button [matMenuTriggerFor]="myMenu">{{name}}
+        <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
     </div>
-    <md-menu #myMenu="mdMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
-      <button md-menu-item>
+    <mat-menu #myMenu="matMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
+      <button mat-menu-item>
         settings
       </button>
-      <button md-menu-item (click)="logout()">
+      <button mat-menu-item (click)="logout()">
         logout
       </button>
-    </md-menu>
+    </mat-menu>
   `,
   styles: [`
     .navigation {

@@ -1,4 +1,4 @@
-import {Headers, Http, RequestOptions} from '@angular/http';
+import {Headers, RequestOptions, Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {Injectable} from '@angular/core';
 import {Video} from '../models/video';
@@ -6,7 +6,10 @@ import {User} from '../models/user';
 import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {State} from '../reducers/index';
-import {LoginAction, UserUpdateAction, VideosLoadedAction, VideosLoadingAction} from '../actions/index';
+import {
+  LoginAction, UserUpdateAction, VideoDeletedAction, VideosLoadedAction,
+  VideosLoadingAction
+} from '../actions/index';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import {Error} from '../models/error';
@@ -33,11 +36,11 @@ export class InvidzService {
 
     return this.http.get(BASE_URL + 'authenticate', options)
       .map((value) => {
-        const res = value.json();
-        localStorage.setItem(LOGIN_TOKEN_KEY, res.token);
-        this.store.dispatch(new LoginAction(res.user));
+        const res = value;
+        localStorage.setItem(LOGIN_TOKEN_KEY, res.json().token);
+        this.store.dispatch(new LoginAction(res.json().user));
         console.log('action fired');
-        return res.user;
+        return res.json().user;
       }).catch(this.handleError.bind(this));
   }
 
@@ -47,6 +50,13 @@ export class InvidzService {
       const videos = value.json().data;
       this.store.dispatch(new VideosLoadedAction(videos));
       return videos;
+    }).catch(this.handleError.bind(this));
+  }
+
+  deleteVideo(id: number): Observable<number | {}> {
+    return this.http.delete(BASE_URL + 'videos/' + id, this.requestOptions()).map((value) => {
+      this.store.dispatch(new VideoDeletedAction(id));
+      return id;
     }).catch(this.handleError.bind(this));
   }
 
@@ -80,7 +90,7 @@ export class InvidzService {
         localStorage.removeItem(LOGIN_TOKEN_KEY);
         this.router.navigate(['/login']);
       }
-      const message = error.json().message;
+      const message = error.message;
       console.log(error, message);
       throw {message: message};
     } else {

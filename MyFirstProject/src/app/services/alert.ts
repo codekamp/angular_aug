@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 
 @Injectable()
 export class AlertService {
 
-  constructor(private snackbar: MdSnackBar) {
+  constructor(private snackbar: MatSnackBar) {
   }
 
   success(message: string, duration: number = 3000) {
